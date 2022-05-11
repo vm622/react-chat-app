@@ -1,5 +1,5 @@
-# react_chat
-MERN messenger chat 
+# React Chat App
+MERN messenger with rooms
 
 ### Install dependencies
 
