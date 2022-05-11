@@ -35,7 +35,7 @@ messageSchema.statics.createPostInChatRoom = async function (chatRoomId, postedB
               let: {'creator_id': '$creator'},
               pipeline: [
                 { "$match": { "$expr": { "$eq": ["$_id", "$$creator_id"] }}},
-                { "$project": { email:0, password:0, testArray:0, createdAt:0, updatedAt:0, __v:0 }}
+                { "$project": { email:0, password:0, createdAt:0, updatedAt:0, __v:0 }}
               ],
               as: 'postedByUser',
             }
@@ -58,13 +58,13 @@ messageSchema.statics.getConversationByRoomId = async function (chatRoomId, opti
                   let: {'creator_id': '$creator'},
                   pipeline: [
                     { "$match": { "$expr": { "$eq": ["$_id", "$$creator_id"] }}},
-                    { "$project": { email:0, password:0, testArray:0, createdAt:0, updatedAt:0, __v:0 }}
+                    { "$project": { email:0, password:0, createdAt:0, updatedAt:0, __v:0 }}
                   ],
                   as: 'postedByUser',
                 }
               },
               { $skip: options.page * options.limit },
-              //consider this option of sorting them 2 times and printing ONLY LAST 10 (maybe should be removed)
+              //limitation of chat messages number
 //              { $sort: { createdAt: -1 } },
 //              { $limit: options.limit },
               { $sort: { createdAt: 1 } },

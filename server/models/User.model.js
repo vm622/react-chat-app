@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
-/*TODO: add {login, register, auth, token, jwt} */
 
 const userSchema = mongoose.Schema({
 	username: {
 		type: String,
 		required: [true, 'Please add a name'],
+		unique: true,
 		maxlength: 128,
 	},
 	email: {
@@ -35,7 +35,6 @@ userSchema.statics.registerUser = async function(username, email, password) {
 			error: 'Add all fields'
 		});
 
-		// Check if user exists
 		const userExists = await this.findOne({
 			email
 		})
@@ -44,7 +43,6 @@ userSchema.statics.registerUser = async function(username, email, password) {
 			error: 'User with this email already exists'
 		});
 
-		// Hash password
 		const salt = await bcrypt.genSalt(10)
 		const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -90,8 +88,29 @@ userSchema.statics.getUserById = async function(userId) {
 		if (!user) throw ({
 			error: 'No user with this id found'
 		});
-		console.log(user)
 		return user;
+	} catch (error) {
+		throw error;
+	}
+}
+
+userSchema.statics.getUsersByNames = async function(names) {
+	try {
+
+		return this.aggregate([{
+			$match: {
+				username: {
+					$in: names
+				}
+			}
+		}, {
+			"$project": {
+				password: 0,
+				createdAt: 0,
+				updatedAt: 0,
+				__v: 0
+			}
+		}]);
 	} catch (error) {
 		throw error;
 	}
@@ -118,7 +137,6 @@ userSchema.statics.getUsersByIds = async function(ids) {
 		}, {
 			"$project": {
 				password: 0,
-				testArray: 0,
 				createdAt: 0,
 				updatedAt: 0,
 				__v: 0

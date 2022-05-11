@@ -14,3 +14,10 @@ npm install
 cd server
 node server.js
 ```
+
+### Run Web Client
+
+```
+cd web-client
+npm start
+```

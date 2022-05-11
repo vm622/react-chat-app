@@ -41,8 +41,8 @@ chatroomSchema.statics.createChatroom = async function(chatroomName, chatroomCre
 	try {
 		const chatroom = await this.create({
 			name: chatroomName, 
-            creator: chatroomCreator , 
-            members: chatroomMembers
+      creator: chatroomCreator , 
+      members: chatroomMembers
 		});
 		return chatroom;
 	} catch (error) {
@@ -59,7 +59,6 @@ chatroomSchema.statics.addUserToChatroom = async function (chatroomId, userId) {
         } 
         });
     const room = await this.findOne({ _id: chatroomId });
-    console.log(room)
     return room;
   } catch (error) {
     throw error;
@@ -75,7 +74,6 @@ chatroomSchema.statics.deleteUserFromChatroom = async function (chatroomId, user
         } 
         });
     const room = await this.findOne({ _id: chatroomId });
-    console.log(room)
     return room;
   } catch (error) {
     throw error;

@@ -1,6 +1,5 @@
 const userModel = require('../models/User.model.js');
 
-/*TODO: add {login, register, auth, token, jwt} */
 
 module.exports = {
   getAllUsers: async (req, res) => {

@@ -5,9 +5,13 @@ const messageModel = require('../models/Message.model.js');
 module.exports = {
   createChatroom: async (req, res) => {
     try {
-      const { name, creator, members } = req.body;
+      const { name, members } = req.body;
+      const creator = req.user.username;
+      const creatorId = req.user._id;
       members.push(creator);
-      const chatroom = await chatroomModel.createChatroom(name, creator, members);
+      const users = await userModel.getUsersByNames(members);
+      membersIds = users.map((user) => {return user._id.toString()})
+      const chatroom = await chatroomModel.createChatroom(name, creatorId, membersIds);
       return res.status(200).json({ success: true, chatroom });
     } catch (error) {
       return res.status(500).json({ success: false, error: error })
@@ -17,7 +21,7 @@ module.exports = {
     try {
       const  roomId  = req.params.roomId;
       const message = req.body.messageText;
-      const currentLoggedUser = req.params.userId;
+      const currentLoggedUser = req.user._id;
       const post = await messageModel.createPostInChatRoom(roomId, currentLoggedUser, message); 
       return res.status(200).json({ success: true, post });
     } catch (error) {
@@ -26,7 +30,7 @@ module.exports = {
   },
   getUserChatrooms: async (req, res) => {
     try {
-      const currentLoggedUser = req.params.userId;
+      const currentLoggedUser = req.user._id;
       const rooms = await chatroomModel.getChatRoomsByUserId(currentLoggedUser);
       return res.status(200).json({ success: true, userChatrooms: rooms });
     } catch (error) {
