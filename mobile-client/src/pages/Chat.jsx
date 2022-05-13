@@ -93,6 +93,6 @@ const Container = styled.div`
     grid-template-columns: 0% 100%;
   }
   .grid-big {
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 50% 50%;
   }
 `;

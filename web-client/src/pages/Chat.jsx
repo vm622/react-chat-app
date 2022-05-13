@@ -14,6 +14,12 @@ export default function Chat() {
   const [chatrooms, setChatrooms] = useState([]);
   const [currentChatroom, setCurrentChatroom] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [menuCollapse, setMenuCollapse] = useState(false);
+
+
+  const menuIconClick = () => {
+    menuCollapse ? setMenuCollapse(false) : setMenuCollapse(true);
+  };
   
   useEffect(async () => {
     if (!localStorage.getItem("userInfo")) {
@@ -52,12 +58,12 @@ export default function Chat() {
   return (
     <>
       <Container>
-        <div className="container">
+        <div className={`container ${menuCollapse ? "grid-small" : "grid-big"}`}>
           <Rooms chatrooms={chatrooms} changeChat={handleChatChange} />
           {currentChatroom === undefined ? (
-            <Welcome />
+            <Welcome setCollapse={menuIconClick}/>
           ) : (
-            <ChatContainer currentChatroom={currentChatroom} socket={socket} loggedUser={currentUser.user}/>
+            <ChatContainer currentChatroom={currentChatroom} socket={socket} loggedUser={currentUser.user} setCollapse={menuIconClick}/>
           )}
         </div>
       </Container>
@@ -79,9 +85,14 @@ const Container = styled.div`
     width: 100vw;
     background-color: rgb(74, 88, 110);
     display: grid;
-    grid-template-columns: 22% 78%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
     }
+  }
+  .grid-small {
+    grid-template-columns: 0% 100%;
+  }
+  .grid-big {
+    grid-template-columns: 20% 80%;
   }
 `;

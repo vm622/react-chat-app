@@ -56,7 +56,7 @@ const Container = styled.div`
     gap: 2rem;
     background-color: #ffffff34;
     input {
-      width: 90%;
+      width: 100%;
       height: 60%;
       background-color: transparent;
       color: white;

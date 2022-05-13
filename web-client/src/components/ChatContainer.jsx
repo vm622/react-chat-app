@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { IoMdMenu } from "react-icons/io";
 import ChatInput from "./ChatInput";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { getChatroomConverstionRoute, postMessageRoute } from "../utils/API_routes";
 
-export default function ChatContainer({ currentChatroom, socket, loggedUser }) {
+export default function ChatContainer({ currentChatroom, socket, loggedUser, setCollapse }) {
   const [messages, setMessages] = useState([]);
   const scrollRef = useRef();
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -68,10 +69,17 @@ export default function ChatContainer({ currentChatroom, socket, loggedUser }) {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const changeCollapse = () => {
+    setCollapse();
+  };
+
   return (
     <Container>
       <div className="chat-header">
         <div className="chat-details">
+          <div className="button-menu" onClick={changeCollapse}>
+            <IoMdMenu />
+          </div>
           <div className="username">
             <h3>{currentChatroom.name}</h3>
           </div>
@@ -102,7 +110,7 @@ export default function ChatContainer({ currentChatroom, socket, loggedUser }) {
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 6% 84% 10%;
+  grid-template-rows: 5% 85% 10%;
   gap: 0.1rem;
   overflow: hidden;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
@@ -110,10 +118,7 @@ const Container = styled.div`
   }
   .chat-header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2rem;
+    padding: 0 0rem;
     background-color: rgb(35, 50, 85);
     .chat-details {
       display: flex;
@@ -123,6 +128,14 @@ const Container = styled.div`
         h3 {
           color: white;
         }
+      }
+      .button-menu {
+      padding: 0.3rem 2rem;
+      border-radius: 2rem;
+      display: flex;
+      font-size: 1.5rem;
+      color: white;
+      border: none;
       }
     }
   }
